@@ -1,6 +1,13 @@
 import { Console } from '@woowacourse/mission-utils';
 
 /**
+ * 입력 문자열이 커스텀 구분자 헤더("//")로 시작하는지 여부를 반환합니다.
+ * @param {string} trimmedUserInputString - 사용자 입력 문자열(공백 제거된 상태)
+ * @returns {boolean} 입력이 "//"로 시작하면 true, 그렇지 않으면 false
+ */
+const hasCustomDelimiterHeader = trimmedUserInputString => trimmedUserInputString.startsWith('//');
+
+/**
  * 기본 구분자(쉼표, 콜론)로 문자열을 나눕니다.
  * - 선행/후행/연속 구분자 등으로 인해 값이 비어 있으면 Error를 던집니다.
  * @param {string} trimmedUserInputString - 사용자 입력 문자열(공백 제거된 상태)
@@ -61,6 +68,8 @@ class App {
   async run() {
     const userInputString = await Console.readLineAsync('덧셈할 문자열을 입력해 주세요.\n');
     const trimmedUserInputString = userInputString.trim();
+
+    Console.print(hasCustomDelimiterHeader(trimmedUserInputString));
 
     if (trimmedUserInputString === '') {
       Console.print('결과 : 0');
