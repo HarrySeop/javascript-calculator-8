@@ -38,6 +38,18 @@ const convertToValidatedNumbers = (splitStrings) => {
   return convertedNumbers;
 };
 
+/**
+ * 숫자 배열이 모두 양수인지 검증합니다.
+ * - 0 이하의 숫자가 하나라도 있으면 Error를 던집니다.
+ * @param {number[]} splitNumbers - 검증할 숫자 배열
+ */
+const validatePositiveNumbers = (splitNumbers) => {
+  const hasZeroOrNegative = splitNumbers.some((splitNumber) => splitNumber <= 0);
+  if (hasZeroOrNegative) {
+    throw new Error('[ERROR] 양수만 입력할 수 있습니다.');
+  }
+};
+
 class App {
   async run() {
     const userInputString = await Console.readLineAsync('덧셈할 문자열을 입력해 주세요.\n');
@@ -50,6 +62,7 @@ class App {
 
     const splitStrings = splitByDefaultDelimiters(trimmedUserInputString);
     const splitNumbers = convertToValidatedNumbers(splitStrings);
+    validatePositiveNumbers(splitNumbers);
     Console.print(splitStrings);
     Console.print(splitNumbers);
   }
