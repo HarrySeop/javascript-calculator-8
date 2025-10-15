@@ -24,6 +24,10 @@ const splitByDefaultDelimiters = (trimmedUserInputString) => {
  * @returns {number[]} 변환된 숫자 배열
  */
 const convertToValidatedNumbers = (splitStrings) => {
+  const hasOnlySpaces = splitStrings.some((splitString) => splitString.trim() === '');
+  if (hasOnlySpaces) {
+    throw new Error('[ERROR] 공백만 있는 값은 입력할 수 없습니다.');
+  }
   const convertedNumbers = splitStrings.map((splitString) => Number(splitString));
 
   const hasNonNumber = convertedNumbers.some((numberValue) => Number.isNaN(numberValue));
