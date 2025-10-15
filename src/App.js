@@ -41,14 +41,21 @@ const convertToValidatedNumbers = (splitStrings) => {
 /**
  * 숫자 배열이 모두 양수인지 검증합니다.
  * - 0 이하의 숫자가 하나라도 있으면 Error를 던집니다.
- * @param {number[]} splitNumbers - 검증할 숫자 배열
+ * @param {number[]} numbers - 검증할 숫자 배열
  */
-const validatePositiveNumbers = (splitNumbers) => {
-  const hasZeroOrNegative = splitNumbers.some((splitNumber) => splitNumber <= 0);
+const validatePositiveNumbers = (numbers) => {
+  const hasZeroOrNegative = numbers.some((number) => number <= 0);
   if (hasZeroOrNegative) {
     throw new Error('[ERROR] 양수만 입력할 수 있습니다.');
   }
 };
+
+/**
+ * 전달된 숫자 배열의 합을 계산해 반환합니다.
+ * @param {number[]} numbers - 합을 계산할 숫자 배열
+ * @returns {number} 숫자 배열의 총합
+ */
+const sumNumbers = (numbers) => numbers.reduce((accumulator, currentNumber) => accumulator + currentNumber, 0);
 
 class App {
   async run() {
@@ -61,10 +68,11 @@ class App {
     }
 
     const splitStrings = splitByDefaultDelimiters(trimmedUserInputString);
-    const splitNumbers = convertToValidatedNumbers(splitStrings);
-    validatePositiveNumbers(splitNumbers);
-    Console.print(splitStrings);
-    Console.print(splitNumbers);
+    const numbers = convertToValidatedNumbers(splitStrings);
+    validatePositiveNumbers(numbers);
+    const calculatedSum = sumNumbers(numbers);
+
+    Console.print(`결과 : ${calculatedSum}`);
   }
 }
 
