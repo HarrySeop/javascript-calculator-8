@@ -16,6 +16,24 @@ const splitByDefaultDelimiters = (trimmedUserInputString) => {
 
   return splitStrings;
 };
+
+/**
+ * 문자열 배열을 숫자 배열로 변환하기 전에 모든 값이 숫자인지 검증합니다.
+ * - 숫자가 아닌 값이 하나라도 있으면 Error를 던집니다.
+ * @param {string[]} splitStrings - 구분자로 분리된 문자열 배열
+ * @returns {number[]} 변환된 숫자 배열
+ */
+const convertToValidatedNumbers = (splitStrings) => {
+  const convertedNumbers = splitStrings.map((splitString) => Number(splitString));
+
+  const hasNonNumber = convertedNumbers.some((numberValue) => Number.isNaN(numberValue));
+  if (hasNonNumber) {
+    throw new Error('[ERROR] 숫자가 아닌 값을 입력하시면 안됩니다.');
+  }
+
+  return convertedNumbers;
+};
+
 class App {
   async run() {
     const userInputString = await Console.readLineAsync('덧셈할 문자열을 입력해 주세요.\n');
@@ -27,7 +45,9 @@ class App {
     }
 
     const splitStrings = splitByDefaultDelimiters(trimmedUserInputString);
+    const splitNumbers = convertToValidatedNumbers(splitStrings);
     Console.print(splitStrings);
+    Console.print(splitNumbers);
   }
 }
 
