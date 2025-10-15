@@ -6,10 +6,10 @@ import { Console } from '@woowacourse/mission-utils';
  * @param {string} trimmedUserInputString - 사용자 입력 문자열(공백 제거된 상태)
  * @returns {string[]} 구분자를 기준으로 분리된 문자열 배열
  */
-const splitByDefaultDelimiters = (trimmedUserInputString) => {
+const splitByDefaultDelimiters = trimmedUserInputString => {
   const splitStrings = trimmedUserInputString.split(/[,:]/);
 
-  const hasEmptyString = splitStrings.some((splitString) => splitString === '');
+  const hasEmptyString = splitStrings.some(splitString => splitString === '');
   if (hasEmptyString) {
     throw new Error('[ERROR] 구분자를 기준으로 값이 비어 있습니다.');
   }
@@ -23,14 +23,14 @@ const splitByDefaultDelimiters = (trimmedUserInputString) => {
  * @param {string[]} splitStrings - 구분자로 분리된 문자열 배열
  * @returns {number[]} 변환된 숫자 배열
  */
-const convertToValidatedNumbers = (splitStrings) => {
-  const hasOnlySpaces = splitStrings.some((splitString) => splitString.trim() === '');
+const convertToValidatedNumbers = splitStrings => {
+  const hasOnlySpaces = splitStrings.some(splitString => splitString.trim() === '');
   if (hasOnlySpaces) {
     throw new Error('[ERROR] 공백만 있는 값은 입력할 수 없습니다.');
   }
-  const convertedNumbers = splitStrings.map((splitString) => Number(splitString));
+  const convertedNumbers = splitStrings.map(splitString => Number(splitString));
 
-  const hasNonNumber = convertedNumbers.some((numberValue) => Number.isNaN(numberValue));
+  const hasNonNumber = convertedNumbers.some(numberValue => Number.isNaN(numberValue));
   if (hasNonNumber) {
     throw new Error('[ERROR] 숫자가 아닌 값을 입력하시면 안됩니다.');
   }
@@ -43,8 +43,8 @@ const convertToValidatedNumbers = (splitStrings) => {
  * - 0 이하의 숫자가 하나라도 있으면 Error를 던집니다.
  * @param {number[]} numbers - 검증할 숫자 배열
  */
-const validatePositiveNumbers = (numbers) => {
-  const hasZeroOrNegative = numbers.some((number) => number <= 0);
+const validatePositiveNumbers = numbers => {
+  const hasZeroOrNegative = numbers.some(number => number <= 0);
   if (hasZeroOrNegative) {
     throw new Error('[ERROR] 양수만 입력할 수 있습니다.');
   }
@@ -55,7 +55,7 @@ const validatePositiveNumbers = (numbers) => {
  * @param {number[]} numbers - 합을 계산할 숫자 배열
  * @returns {number} 숫자 배열의 총합
  */
-const sumNumbers = (numbers) => numbers.reduce((accumulator, currentNumber) => accumulator + currentNumber, 0);
+const sumNumbers = numbers => numbers.reduce((accumulator, currentNumber) => accumulator + currentNumber, 0);
 
 class App {
   async run() {
