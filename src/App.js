@@ -8,6 +8,39 @@ import { Console } from '@woowacourse/mission-utils';
 const hasCustomDelimiterHeader = trimmedUserInputString => trimmedUserInputString.startsWith('//');
 
 /**
+ * 커스텀 구분자를 추출하고 문자열에서 분리해서 반환합니다.
+ * - 이 함수는 hasCustomDelimiterHeader(trimmedUserInputString) === true 인 경우에만 호출된다고 가정합니다.
+ * - `//<문자>\n` 구조를 가진 입력에서 구분자를 추출합니다.
+ *
+ * @param {string} trimmedUserInputString - 사용자 입력(앞뒤 공백 제거된 상태, 시작이 '//'라는 전제)
+ * @returns {{ customDelimiter: string, remainingInput: string }} 커스텀 구분자와 '\n' 이후 문자열
+ */
+const extractCustomDelimiter = trimmedUserInputString => {
+  const preprocessedInput = trimmedUserInputString.replace(/\\n/, '\n');
+
+  const delimiterBoundaryIndex = preprocessedInput.indexOf('\n');
+  if (delimiterBoundaryIndex === -1) {
+    throw new Error('[ERROR] 커스텀 구분자 형식이 올바르지 않습니다. ("//<문자>\\n")');
+  }
+
+  const delimiterSection = preprocessedInput.slice(2, delimiterBoundaryIndex);
+  const remainingInput = preprocessedInput.slice(delimiterBoundaryIndex + 1);
+
+  const delimiterCandidate = delimiterSection.trim();
+
+  if (delimiterCandidate === '') {
+    throw new Error('[ERROR] 커스텀 구분자가 비어 있습니다.');
+  }
+
+  if (delimiterCandidate.length !== 1) {
+    throw new Error('[ERROR] 커스텀 구분자는 한 글자만 입력할 수 있습니다.');
+  }
+
+  const customDelimiter = delimiterCandidate;
+  return { customDelimiter, remainingInput };
+};
+
+/**
  * 기본 구분자(쉼표, 콜론)로 문자열을 나눕니다.
  * - 선행/후행/연속 구분자 등으로 인해 값이 비어 있으면 Error를 던집니다.
  * @param {string} trimmedUserInputString - 사용자 입력 문자열(공백 제거된 상태)
@@ -69,10 +102,17 @@ class App {
     const userInputString = await Console.readLineAsync('덧셈할 문자열을 입력해 주세요.\n');
     const trimmedUserInputString = userInputString.trim();
 
-    Console.print(hasCustomDelimiterHeader(trimmedUserInputString));
-
     if (trimmedUserInputString === '') {
       Console.print('결과 : 0');
+      return;
+    }
+
+    if (hasCustomDelimiterHeader(trimmedUserInputString)) {
+      const { customDelimiter, remainingInput } = extractCustomDelimiter(trimmedUserInputString);
+
+      Console.print(customDelimiter);
+      Console.print(remainingInput);
+
       return;
     }
 
