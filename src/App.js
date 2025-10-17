@@ -1,5 +1,14 @@
 import { Console } from '@woowacourse/mission-utils';
 
+const DEFAULT_DELIMITERS = [',', ':'];
+
+/**
+ * 정규식에서 안전하게 사용할 수 있도록 단일 구분자 문자에 이스케이프를 적용합니다.
+ * @param {string} delimiter - 정규식에서 사용할 단일 구분자 문자
+ * @returns {string} 이스케이프된 구분자
+ */
+const escapeDelimiterForRegex = delimiter => delimiter.replace(/[\\^$.*+?()[\]{}|]/, '\\$&');
+
 /**
  * 입력 문자열이 커스텀 구분자 헤더("//")로 시작하는지 여부를 반환합니다.
  * @param {string} trimmedUserInputString - 사용자 입력 문자열(공백 제거된 상태)
@@ -107,14 +116,20 @@ class App {
       return;
     }
 
+    let sourceString = trimmedUserInputString;
+    let delimiters = DEFAULT_DELIMITERS;
+
     if (hasCustomDelimiterHeader(trimmedUserInputString)) {
       const { customDelimiter, remainingInput } = extractCustomDelimiter(trimmedUserInputString);
 
-      Console.print(customDelimiter);
-      Console.print(remainingInput);
-
-      return;
+      sourceString = remainingInput;
+      delimiters = [customDelimiter, ...DEFAULT_DELIMITERS];
     }
+
+    const escapedDelimiters = delimiters.map(escapeDelimiterForRegex);
+
+    Console.print(sourceString);
+    Console.print(escapedDelimiters);
 
     const splitStrings = splitByDefaultDelimiters(trimmedUserInputString);
     const numbers = convertToValidatedNumbers(splitStrings);
