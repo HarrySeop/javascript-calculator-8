@@ -20,6 +20,7 @@ const hasCustomDelimiterHeader = trimmedUserInputString => trimmedUserInputStrin
  * 커스텀 구분자를 추출하고 문자열에서 분리해서 반환합니다.
  * - 이 함수는 hasCustomDelimiterHeader(trimmedUserInputString) === true 인 경우에만 호출된다고 가정합니다.
  * - `//<문자>\n` 구조를 가진 입력에서 구분자를 추출합니다.
+ * - 계산기에 사용되는 항목(숫자, 소수점)은 구분자로 사용할 수 없습니다.
  *
  * @param {string} trimmedUserInputString - 사용자 입력(앞뒤 공백 제거된 상태, 시작이 '//'라는 전제)
  * @returns {{ customDelimiter: string, remainingInput: string }} 커스텀 구분자와 '\n' 이후 문자열
@@ -45,8 +46,8 @@ const extractCustomDelimiter = trimmedUserInputString => {
     throw new Error('[ERROR] 커스텀 구분자는 한 글자만 입력할 수 있습니다.');
   }
 
-  if (/\d/.test(extractedDelimiter)) {
-    throw new Error('[ERROR] 커스텀 구분자로 숫자는 사용할 수 없습니다.');
+  if (/[\d.]/.test(extractedDelimiter)) {
+    throw new Error('[ERROR] 커스텀 구분자로 계산기에 사용되는 항목(숫자, 소수점)은 입력할 수 없습니다.');
   }
 
   const customDelimiter = extractedDelimiter;
