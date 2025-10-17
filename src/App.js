@@ -41,7 +41,7 @@ const extractCustomDelimiter = trimmedUserInputString => {
     throw new Error('[ERROR] 커스텀 구분자가 비어 있습니다.');
   }
 
-  if (extractedDelimiter.length !== 1) {
+  if ([...extractedDelimiter].length !== 1) {
     throw new Error('[ERROR] 커스텀 구분자는 한 글자만 입력할 수 있습니다.');
   }
 
