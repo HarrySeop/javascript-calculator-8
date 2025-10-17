@@ -140,6 +140,11 @@ class App {
 
       sourceString = remainingInput;
       delimiters = [customDelimiter, ...DEFAULT_DELIMITERS];
+
+      if (sourceString === '') {
+        Console.print('결과 : 0');
+        return;
+      }
     }
 
     const regexSafeDelimiters = delimiters.map(escapeDelimiterForRegex);
