@@ -127,11 +127,6 @@ class App {
     const userInputString = await Console.readLineAsync('덧셈할 문자열을 입력해 주세요.\n');
     const trimmedUserInputString = userInputString.trim();
 
-    if (trimmedUserInputString === '') {
-      Console.print('결과 : 0');
-      return;
-    }
-
     let sourceString = trimmedUserInputString;
     let delimiters = DEFAULT_DELIMITERS;
 
@@ -140,11 +135,11 @@ class App {
 
       sourceString = remainingInput;
       delimiters = [customDelimiter, ...DEFAULT_DELIMITERS];
+    }
 
-      if (sourceString === '') {
-        Console.print('결과 : 0');
-        return;
-      }
+    if (sourceString === '') {
+      Console.print('결과 : 0');
+      return;
     }
 
     const regexSafeDelimiters = delimiters.map(escapeDelimiterForRegex);
