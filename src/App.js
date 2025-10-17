@@ -30,7 +30,7 @@ const extractCustomDelimiter = trimmedUserInputString => {
 
   const delimiterBoundaryIndex = preprocessedInput.indexOf('\n');
   if (delimiterBoundaryIndex === -1) {
-    throw new Error('[ERROR] 커스텀 구분자 형식이 올바르지 않습니다. ("//<문자>\\n")');
+    throw new Error('[ERROR] 커스텀 구분자 형식이 올바르지 않습니다.');
   }
 
   const delimiterSection = preprocessedInput.slice(2, delimiterBoundaryIndex);
