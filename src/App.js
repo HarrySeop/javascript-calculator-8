@@ -50,6 +50,17 @@ const extractCustomDelimiter = trimmedUserInputString => {
 };
 
 /**
+ * 이스케이프된 구분자 배열을 사용해 구분자 정규식을 컴파일합니다.
+ *
+ * @param {string[]} regexSafeDelimiters - escapeDelimiterForRegex를 거친 구분자 배열
+ * @returns {RegExp} 컴파일된 구분자 정규식
+ */
+const compileDelimiterRegex = regexSafeDelimiters => {
+  const regexBody = regexSafeDelimiters.join('|');
+  return new RegExp(`(?:${regexBody})`);
+};
+
+/**
  * 기본 구분자(쉼표, 콜론)로 문자열을 나눕니다.
  * - 선행/후행/연속 구분자 등으로 인해 값이 비어 있으면 Error를 던집니다.
  * @param {string} trimmedUserInputString - 사용자 입력 문자열(공백 제거된 상태)
@@ -126,10 +137,13 @@ class App {
       delimiters = [customDelimiter, ...DEFAULT_DELIMITERS];
     }
 
-    const escapedDelimiters = delimiters.map(escapeDelimiterForRegex);
+    const regexSafeDelimiters = delimiters.map(escapeDelimiterForRegex);
 
     Console.print(sourceString);
-    Console.print(escapedDelimiters);
+    Console.print(regexSafeDelimiters);
+
+    const delimiterRegex = compileDelimiterRegex(regexSafeDelimiters);
+    Console.print(delimiterRegex);
 
     const splitStrings = splitByDefaultDelimiters(trimmedUserInputString);
     const numbers = convertToValidatedNumbers(splitStrings);
