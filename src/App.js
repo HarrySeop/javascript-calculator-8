@@ -45,6 +45,10 @@ const extractCustomDelimiter = trimmedUserInputString => {
     throw new Error('[ERROR] 커스텀 구분자는 한 글자만 입력할 수 있습니다.');
   }
 
+  if (/\d/.test(extractedDelimiter)) {
+    throw new Error('[ERROR] 커스텀 구분자로 숫자는 사용할 수 없습니다.');
+  }
+
   const customDelimiter = extractedDelimiter;
   return { customDelimiter, remainingInput };
 };
